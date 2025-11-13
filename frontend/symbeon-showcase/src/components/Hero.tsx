@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef } from 'react'
+import { AnalyticsEvents } from '../utils/analytics'
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -291,7 +292,6 @@ export default function Hero() {
                 window.dispatchEvent(event)
                 // Analytics
                 if (typeof window !== 'undefined' && (window as any).gtag) {
-                  const { AnalyticsEvents } = require('../utils/analytics')
                   AnalyticsEvents.onboardingStarted()
                 }
               }}

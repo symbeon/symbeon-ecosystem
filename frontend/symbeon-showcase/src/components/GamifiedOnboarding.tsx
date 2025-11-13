@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Sparkles, Trophy, Zap, Shield, Heart, Code, TrendingUp, FlaskConical, Brain, Users, Globe, Lock, Eye } from 'lucide-react'
+import { AnalyticsEvents } from '../utils/analytics'
 
 interface Question {
   id: string
@@ -596,7 +597,6 @@ export default function GamifiedOnboarding({ onClose }: GamifiedOnboardingProps)
 
     // Analytics: Track onboarding completion
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      const { AnalyticsEvents } = require('../utils/analytics')
       AnalyticsEvents.onboardingCompleted({
         role: newProfile.role,
         level: newProfile.level,

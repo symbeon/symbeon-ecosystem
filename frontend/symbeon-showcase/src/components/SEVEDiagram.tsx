@@ -14,6 +14,7 @@ import {
   Network,
   CheckCircle2,
 } from 'lucide-react'
+import { AnalyticsEvents } from '../utils/analytics'
 
 interface Module {
   id: string
@@ -208,7 +209,6 @@ export default function SEVEDiagram() {
                         setSelectedModule(selectedModule === module.id ? null : module.id)
                         // Analytics
                         if (typeof window !== 'undefined' && (window as any).gtag) {
-                          const { AnalyticsEvents } = require('../utils/analytics')
                           AnalyticsEvents.seveModuleClicked(module.name)
                         }
                       }}

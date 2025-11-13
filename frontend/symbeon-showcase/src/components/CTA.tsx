@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Github, Mail, Handshake } from 'lucide-react'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
+import { AnalyticsEvents } from '../utils/analytics'
 
 export default function CTA() {
   const ref = useRef(null)
@@ -43,9 +44,7 @@ export default function CTA() {
             onClick={() => {
               const event = new CustomEvent('show-onboarding')
               window.dispatchEvent(event)
-              // Analytics
               if (typeof window !== 'undefined' && (window as any).gtag) {
-                const { AnalyticsEvents } = require('../utils/analytics')
                 AnalyticsEvents.onboardingStarted()
                 AnalyticsEvents.ctaClicked('Criar Perfil', 'CTA Section')
               }

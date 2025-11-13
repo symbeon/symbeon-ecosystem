@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { Eye, Target, Rocket } from 'lucide-react'
 
 export default function Vision() {
   const ref = useRef(null)
