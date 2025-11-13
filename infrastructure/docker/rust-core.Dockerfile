@@ -38,3 +38,4 @@ EXPOSE 8000
 # Run
 CMD ["/app/api-gateway"]
 
+

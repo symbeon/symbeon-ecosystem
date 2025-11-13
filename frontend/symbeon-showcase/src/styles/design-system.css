@@ -1,0 +1,278 @@
+/**
+ * Design System - Symbeon Showcase
+ * Estilo "Hacker Moderno" - Minimalista, Tech, Profissional
+ */
+
+/* ============================================
+   CORES SÉRIAS - HACKER MODERNO
+   ============================================ */
+:root {
+  /* Backgrounds - Tons escuros e sérios */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #0f0f17;
+  --bg-card: #151520;
+  --bg-elevated: #1a1a28;
+  
+  /* Text Colors - Alto contraste */
+  --text-primary: #e8e8f0;
+  --text-secondary: #b8b8c8;
+  --text-tertiary: #888898;
+  --text-muted: #585868;
+  
+  /* Accent Colors - Tech, Sérias */
+  --accent-primary: #00d4ff;      /* Cyan tech */
+  --accent-secondary: #00ff88;    /* Green tech */
+  --accent-tertiary: #6b6bff;     /* Blue tech */
+  --accent-warning: #ffaa00;      /* Orange tech */
+  
+  /* Borders - Sutis */
+  --border-default: rgba(136, 136, 152, 0.1);
+  --border-hover: rgba(0, 212, 255, 0.2);
+  --border-accent: rgba(0, 255, 136, 0.15);
+  
+  /* Shadows - Sutis e tech */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  --shadow-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.15);
+  --shadow-glow-green: 0 0 20px rgba(0, 255, 136, 0.15);
+}
+
+/* ============================================
+   TIPOGRAFIA - HACKER MODERNO
+   ============================================ */
+:root {
+  /* Headings - Bold e tech */
+  --heading-1-size: clamp(3rem, 8vw, 7rem);
+  --heading-2-size: clamp(2.5rem, 6vw, 5rem);
+  --heading-3-size: clamp(2rem, 4vw, 3rem);
+  --heading-4-size: clamp(1.5rem, 3vw, 2rem);
+  
+  /* Body */
+  --body-lg: 1.25rem;
+  --body-md: 1rem;
+  --body-sm: 0.875rem;
+  --body-xs: 0.75rem;
+  
+  /* Line Heights */
+  --line-height-tight: 1.1;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+  
+  /* Font Family - Tech */
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Courier New', monospace;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ============================================
+   ESPAÇAMENTOS
+   ============================================ */
+:root {
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+  --spacing-2xl: 4rem;
+  --spacing-3xl: 6rem;
+  
+  --section-padding-y: 8rem;
+  --section-padding-x: 1rem;
+  
+  --container-max-width: 1280px;
+  --container-padding: 1rem;
+}
+
+/* ============================================
+   ANIMAÇÕES E TRANSIÇÕES
+   ============================================ */
+:root {
+  --transition-fast: 200ms;
+  --transition-base: 400ms;
+  --transition-slow: 600ms;
+  
+  --easing-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --easing-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --easing-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ============================================
+   SCROLL ANIMATIONS - NYO STYLE
+   ============================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Scroll reveal classes - NYO Style */
+.scroll-reveal {
+  opacity: 0;
+  transition: opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+}
+
+.scroll-reveal-up {
+  transform: translateY(60px);
+}
+
+.scroll-reveal-up.revealed {
+  transform: translateY(0);
+}
+
+.scroll-reveal-left {
+  transform: translateX(-60px);
+}
+
+.scroll-reveal-left.revealed {
+  transform: translateX(0);
+}
+
+.scroll-reveal-right {
+  transform: translateX(60px);
+}
+
+.scroll-reveal-right.revealed {
+  transform: translateX(0);
+}
+
+.scroll-reveal-scale {
+  transform: scale(0.95);
+}
+
+.scroll-reveal-scale.revealed {
+  transform: scale(1);
+}
+
+/* Fade in suave */
+.scroll-reveal-fade {
+  opacity: 0;
+  transition: opacity 1000ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.scroll-reveal-fade.revealed {
+  opacity: 1;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.section-container {
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.section-padding {
+  padding-top: var(--section-padding-y);
+  padding-bottom: var(--section-padding-y);
+}
+
+.section-label {
+  font-size: var(--body-xs);
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+}
+
+.heading-1 {
+  font-size: var(--heading-1-size);
+  font-weight: 900;
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+
+.heading-2 {
+  font-size: var(--heading-2-size);
+  font-weight: 900;
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.heading-3 {
+  font-size: var(--heading-3-size);
+  font-weight: 800;
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+/* Card minimalista */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all var(--transition-base) var(--easing-smooth);
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-glow-cyan);
+  transform: translateY(-2px);
+}
+
+/* Text gradient tech */
+.text-gradient-tech {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glow effect */
+.glow-cyan {
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+.glow-green {
+  box-shadow: var(--shadow-glow-green);
+}

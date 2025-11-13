@@ -1,0 +1,131 @@
+═══════════════════════════════════════════════════════════════════════
+  REORGANIZAÇÃO DE ARQUIVOS - GUIA VISUAL (Windows Explorer)
+═══════════════════════════════════════════════════════════════════════
+
+OBJETIVO: Mover showcase e contratos para SYMBEON-ECOSYSTEM
+
+═══════════════════════════════════════════════════════════════════════
+PASSO 1: COPIAR SHOWCASE
+═══════════════════════════════════════════════════════════════════════
+
+1. Abra o Windows Explorer
+
+2. Vá para:
+   C:\Users\João\Desktop\PROJETOS\00_ECOSYSTEM_COMERCIAL\SEVE-FRAMEWORK\SEVE-FRAMEWORK
+
+3. COPIE a pasta "showcase" (Ctrl+C)
+
+4. Vá para:
+   C:\Users\João\Desktop\PROJETOS\00_ECOSYSTEM_COMERCIAL\SYMBEON-ECOSYSTEM
+
+5. Crie uma pasta chamada "frontend" (se não existir)
+
+6. Entre em "frontend"
+
+7. COLE a pasta showcase aqui (Ctrl+V)
+
+8. RENOMEIE de "showcase" para "symbeon-showcase"
+
+RESULTADO:
+SYMBEON-ECOSYSTEM/frontend/symbeon-showcase/ ✅
+
+═══════════════════════════════════════════════════════════════════════
+PASSO 2: COPIAR SMART CONTRACTS EXISTENTES
+═══════════════════════════════════════════════════════════════════════
+
+1. Vá para:
+   C:\Users\João\Desktop\PROJETOS\00_ECOSYSTEM_COMERCIAL\SEVE-FRAMEWORK\SEVE-FRAMEWORK\contracts
+
+2. COPIE os arquivos:
+   - SEVEToken.sol
+   - SEVEProtocol.sol
+   - SEVEDAO.sol
+
+3. Vá para:
+   C:\Users\João\Desktop\PROJETOS\00_ECOSYSTEM_COMERCIAL\SYMBEON-ECOSYSTEM\smart-contracts\contracts
+
+4. COLE os 3 arquivos aqui (Ctrl+V)
+
+RESULTADO:
+SYMBEON-ECOSYSTEM/smart-contracts/contracts/
+├── SEVEToken.sol          ✅ (copiado)
+├── SEVEProtocol.sol       ✅ (copiado)
+├── SEVEDAO.sol            ✅ (copiado)
+├── SEVEDonation.sol       ✅ (já existia)
+└── SEVECertification.sol  ✅ (já existia)
+
+═══════════════════════════════════════════════════════════════════════
+PASSO 3: COPIAR HARDHAT CONFIG
+═══════════════════════════════════════════════════════════════════════
+
+1. Vá para:
+   C:\Users\João\Desktop\PROJETOS\00_ECOSYSTEM_COMERCIAL\SEVE-FRAMEWORK\SEVE-FRAMEWORK
+
+2. COPIE:
+   - hardhat.config.js
+   - package.json (do hardhat)
+   - package-lock.json (se existir)
+
+3. Vá para:
+   C:\Users\João\Desktop\PROJETOS\00_ECOSYSTEM_COMERCIAL\SYMBEON-ECOSYSTEM\smart-contracts
+
+4. COLE aqui (pode sobrescrever se perguntar)
+
+RESULTADO:
+SYMBEON-ECOSYSTEM/smart-contracts/hardhat.config.js ✅
+
+═══════════════════════════════════════════════════════════════════════
+PASSO 4: COMMIT NO GIT
+═══════════════════════════════════════════════════════════════════════
+
+Opção A: GitHub Desktop (Mais Fácil)
+──────────────────────────────────────
+1. Abra GitHub Desktop
+2. Selecione: symbeon-ecosystem
+3. Veja as mudanças (arquivos adicionados)
+4. Summary: "feat: add frontend and existing smart contracts"
+5. Commit to main
+6. Push origin
+
+Opção B: VS Code
+──────────────────────────────────────
+1. Abra VS Code
+2. Open Folder: SYMBEON-ECOSYSTEM
+3. Source Control (Ctrl+Shift+G)
+4. Stage All Changes (+)
+5. Message: "feat: add frontend and existing smart contracts"
+6. Commit (✓)
+7. Push
+
+═══════════════════════════════════════════════════════════════════════
+VERIFICAR
+═══════════════════════════════════════════════════════════════════════
+
+Acesse: https://github.com/symbeon/symbeon-ecosystem
+
+Você deve ver:
+✅ frontend/symbeon-showcase/
+✅ smart-contracts/contracts/ (5 arquivos .sol)
+
+═══════════════════════════════════════════════════════════════════════
+PRÓXIMO: DEPLOY DO SHOWCASE
+═══════════════════════════════════════════════════════════════════════
+
+Depois da reorganização:
+
+1. Acesse Vercel Dashboard: https://vercel.com/dashboard
+
+2. Import Project → symbeon/symbeon-ecosystem
+
+3. Configure:
+   - Framework: Vite
+   - Root Directory: frontend/symbeon-showcase
+   - Build Command: npm run build
+   - Output Directory: dist
+
+4. Add Domain: symbeon.tech
+
+5. Deploy!
+
+═══════════════════════════════════════════════════════════════════════
+

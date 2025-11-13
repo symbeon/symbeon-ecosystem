@@ -270,3 +270,4 @@ COMMENT ON TABLE donations IS 'Doações e investimentos via crypto';
 COMMENT ON TABLE payments IS 'Pagamentos (licenças, cursos, etc.)';
 COMMENT ON TABLE api_keys IS 'Chaves de API para validação ética';
 
+

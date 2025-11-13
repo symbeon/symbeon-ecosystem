@@ -189,3 +189,4 @@ Construído com ❤️ pelo time Symbeon
 
 **Tecnologia com Propósito • Ética por Design • Impacto Real**
 
+

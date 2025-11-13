@@ -1,0 +1,11 @@
+# robots.txt para symbeon.tech
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://symbeon.tech/sitemap.xml
+
+# Crawl-delay (opcional, se necessário)
+# Crawl-delay: 1
+
