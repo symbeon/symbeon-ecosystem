@@ -141,3 +141,44 @@
   from { clip-path: inset(0 100% 0 0); }
   to { clip-path: inset(0 0 0 0); }
 }
+
+/* Accessibility helpers */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  border-radius: 6px;
+  z-index: 9999;
+}
+
+/* Make focus outlines visible for keyboard users */
+*:focus {
+  outline: none;
+}
+*:focus-visible {
+  outline: 3px solid rgba(0,212,255,0.9);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Ensure interactive elements have a clear focus style */
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible {
+  box-shadow: 0 0 0 4px rgba(0,212,255,0.08), 0 0 0 2px rgba(0,212,255,0.18);
+}
+
+/* Ensure adequate contrast for mission/value highlights under #visao */
+#visao span.font-semibold {
+  color: #5a5aff; /* slightly darker than #6b6bff to meet contrast requirements */
+}

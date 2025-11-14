@@ -105,6 +105,7 @@ export default function Header() {
           <button
             className="md:hidden text-[#b8b8c8] hover:text-[#e8e8f0]"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

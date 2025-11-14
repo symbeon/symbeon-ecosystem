@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { X, Mail, Lock, User, AlertCircle, Github } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -14,6 +14,7 @@ export default function LoginModal({
   onClose,
   defaultMode = 'login',
 }: LoginModalProps) {
+  const modalRef = useRef<HTMLDivElement | null>(null)
   const [mode, setMode] = useState<'login' | 'register' | 'forgot'>(defaultMode)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -64,6 +65,46 @@ export default function LoginModal({
     }
   }
 
+  // Focus trap + restore focus
+  useEffect(() => {
+    if (!isOpen) return
+    const modal = modalRef.current
+    if (!modal) return
+
+    const prevActive = document.activeElement as HTMLElement | null
+    const focusable = Array.from(
+      modal.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => el.offsetParent !== null)
+
+    if (focusable.length) focusable[0].focus()
+
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+      if (e.key === 'Tab') {
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault()
+          first.focus()
+        }
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault()
+          last.focus()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKey)
+    return () => {
+      document.removeEventListener('keydown', handleKey)
+      if (prevActive) prevActive.focus()
+    }
+  }, [isOpen, onClose])
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -81,6 +122,10 @@ export default function LoginModal({
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="login-modal-title"
+            ref={modalRef}
             className="bg-bg-card rounded-3xl border border-slate-700/50 p-8 md:p-12 w-full max-w-md relative shadow-2xl max-h-[90vh] overflow-y-auto my-auto mx-auto"
           >
             <button
@@ -92,7 +137,7 @@ export default function LoginModal({
             </button>
 
             <div className="mb-8">
-              <h2 className="text-3xl font-black text-gradient mb-2">
+              <h2 id="login-modal-title" className="text-3xl font-black text-gradient mb-2">
                 {mode === 'login'
                   ? 'Entrar'
                   : mode === 'register'
@@ -114,26 +159,28 @@ export default function LoginModal({
                   <p className="text-slate-300 mb-4">
                     Digite seu email e enviaremos um link para redefinir sua senha.
                   </p>
-                  <div className="relative">
-                    <Mail
-                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
-                      size={20}
-                    />
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-bg-secondary border border-slate-700 rounded-lg text-slate-200 focus:border-purple-500 focus:outline-none transition-colors"
-                      placeholder="seu@email.com"
-                      required
-                    />
-                  </div>
+                    <div className="relative">
+                      <Mail
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
+                        size={20}
+                      />
+                      <label htmlFor="forgot-email" className="sr-only">Email</label>
+                      <input
+                        id="forgot-email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full pl-10 pr-4 py-3 bg-bg-secondary border border-slate-700 rounded-lg text-slate-200 focus:border-purple-500 focus:outline-none transition-colors"
+                        placeholder="seu@email.com"
+                        required
+                      />
+                    </div>
                 </div>
               ) : (
                 <>
                   {mode === 'register' && (
                 <div>
-                  <label className="block text-sm text-slate-400 mb-2">
+                  <label htmlFor="register-name" className="block text-sm text-slate-400 mb-2">
                     Nome
                   </label>
                   <div className="relative">
@@ -142,6 +189,7 @@ export default function LoginModal({
                       size={20}
                     />
                     <input
+                      id="register-name"
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -153,28 +201,29 @@ export default function LoginModal({
                 </div>
                   )}
 
-                  <div>
-                <label className="block text-sm text-slate-400 mb-2">
-                  Email
-                </label>
-                <div className="relative">
-                  <Mail
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
-                    size={20}
-                  />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-bg-secondary border border-slate-700 rounded-lg text-slate-200 focus:border-purple-500 focus:outline-none transition-colors"
-                    placeholder="seu@email.com"
-                    required
-                  />
+                <div>
+                  <label htmlFor="login-email" className="block text-sm text-slate-400 mb-2">
+                    Email
+                  </label>
+                  <div className="relative">
+                    <Mail
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
+                      size={20}
+                    />
+                    <input
+                      id="login-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 bg-bg-secondary border border-slate-700 rounded-lg text-slate-200 focus:border-purple-500 focus:outline-none transition-colors"
+                      placeholder="seu@email.com"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
 
               <div>
-                <label className="block text-sm text-slate-400 mb-2">
+                <label htmlFor="login-password" className="block text-sm text-slate-400 mb-2">
                   Senha
                 </label>
                 <div className="relative">
@@ -183,6 +232,7 @@ export default function LoginModal({
                     size={20}
                   />
                   <input
+                    id="login-password"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -260,6 +310,7 @@ export default function LoginModal({
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  aria-label="Continuar com Google"
                   className="px-4 py-3 bg-bg-secondary border border-slate-700 rounded-lg text-slate-200 hover:border-purple-500/50 transition-all flex items-center justify-center gap-2"
                 >
                   <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -290,6 +341,7 @@ export default function LoginModal({
                   }}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
+                  aria-label="Continuar com GitHub"
                   className="px-4 py-3 bg-bg-secondary border border-slate-700 rounded-lg text-slate-200 hover:border-purple-500/50 transition-all flex items-center justify-center gap-2"
                 >
                   <Github size={20} />
