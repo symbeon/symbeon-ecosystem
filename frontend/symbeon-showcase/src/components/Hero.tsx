@@ -27,12 +27,16 @@ const itemVariants = {
 // Componente de animação: Código Genético + Dados (Fusão Humano-Máquina)
 function GeneticDataFusion() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const isAnimatingRef = useRef(true)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext('2d')
+    // Aplicar will-change para otimização
+    canvas.style.willChange = 'contents'
+
+    const ctx = canvas.getContext('2d', { alpha: true })
     if (!ctx) return
 
     canvas.width = window.innerWidth
@@ -66,8 +70,8 @@ function GeneticDataFusion() {
       type: 'binary' | 'code'
     }> = []
 
-    // Criar partículas de DNA
-    for (let i = 0; i < 30; i++) {
+    // Criar partículas de DNA (reduzido para performance)
+    for (let i = 0; i < 25; i++) {
       dnaParticles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
@@ -79,8 +83,8 @@ function GeneticDataFusion() {
       })
     }
 
-    // Criar partículas de dados
-    for (let i = 0; i < 40; i++) {
+    // Criar partículas de dados (reduzido para performance)
+    for (let i = 0; i < 35; i++) {
       const isBinary = Math.random() > 0.5
       dataParticles.push({
         x: Math.random() * canvas.width,
@@ -116,7 +120,7 @@ function GeneticDataFusion() {
         const x1 = centerX + Math.cos(angle) * radius
         const x2 = centerX - Math.cos(angle) * radius
 
-        // Linhas da hélice
+        // Linhas da hélice com degradado de cor
         ctx.beginPath()
         ctx.moveTo(x1, y)
         ctx.lineTo(x2, y)
@@ -137,7 +141,8 @@ function GeneticDataFusion() {
     }
 
     function animate() {
-      if (!ctx || !canvas) return
+      if (!ctx || !canvas || !isAnimatingRef.current) return
+      
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
       // Rotacionar hélice
@@ -207,7 +212,7 @@ function GeneticDataFusion() {
       requestAnimationFrame(animate)
     }
 
-    animate()
+    const animationFrameId = requestAnimationFrame(animate)
 
     const handleResize = () => {
       canvas.width = window.innerWidth
@@ -216,8 +221,22 @@ function GeneticDataFusion() {
       helixCenter.y = canvas.height / 2
     }
 
+    // Detectar quando o usuário sai da viewport do Hero
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        isAnimatingRef.current = entry.isIntersecting
+      })
+    })
+    observer.observe(canvas)
+
     window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    return () => {
+      isAnimatingRef.current = false
+      cancelAnimationFrame(animationFrameId)
+      window.removeEventListener('resize', handleResize)
+      observer.disconnect()
+      canvas.style.willChange = 'auto'
+    }
   }, [])
 
   return (
@@ -278,7 +297,7 @@ export default function Hero() {
           variants={itemVariants}
           className="text-xl md:text-2xl mb-12 text-white/70 max-w-3xl mx-auto leading-relaxed font-light"
         >
-          SEVE — Symbiotic Ethical Vision Engine: Core tecnológico para IA ética em produção
+          SEVE — Symbiotic Ethical Vision Engine: orquestra certificação, governança e deploy de IA ética em escala
         </motion.p>
 
         <motion.div

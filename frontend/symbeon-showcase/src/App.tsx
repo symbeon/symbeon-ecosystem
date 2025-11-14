@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
+import ScrollProgress from './components/ScrollProgress'
 import HomePage from './pages/HomePage'
 import MarketplacePageEnhanced from './pages/MarketplacePageEnhanced'
 import DashboardPage from './pages/DashboardPage'
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-bg-primary">
+      <ScrollProgress color="from-cyan-500 to-purple-500" height={3} />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
