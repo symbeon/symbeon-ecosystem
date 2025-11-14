@@ -71,7 +71,8 @@ export default function LoginModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm grid place-items-center p-4"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm overflow-auto flex items-center justify-center"
+          style={{ minHeight: '100vh' }}
           onClick={onClose}
         >
           <motion.div
@@ -80,7 +81,7 @@ export default function LoginModal({
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-bg-card rounded-3xl border border-slate-700/50 p-8 md:p-12 w-full max-w-md relative shadow-2xl max-h-[90vh] overflow-y-auto"
+            className="bg-bg-card rounded-3xl border border-slate-700/50 p-8 md:p-12 w-full max-w-md relative shadow-2xl max-h-[90vh] overflow-y-auto my-auto mx-auto"
           >
             <button
               onClick={onClose}
