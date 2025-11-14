@@ -3,7 +3,6 @@ import { useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import { ZoomIn, ZoomOut, RotateCcw, X } from 'lucide-react'
-import mermaid from 'mermaid'
 
 interface ModuleInfo {
   id: string
@@ -82,17 +81,28 @@ export default function SEVEDiagramInteractive() {
   const [isAnimating, setIsAnimating] = useState(false)
 
   useEffect(() => {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'dark',
-      securityLevel: 'loose',
-      flowchart: {
-        useMaxWidth: true,
-        htmlLabels: false,
-        curve: 'basis',
-        padding: 20,
-      },
-    })
+    // dynamically import mermaid to avoid bundling it in the main chunk
+    let cancelled = false
+    import('mermaid')
+      .then((mod) => {
+        if (cancelled) return
+        const mermaid = (mod as any).default || mod
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'dark',
+          securityLevel: 'loose',
+          flowchart: {
+            useMaxWidth: true,
+            htmlLabels: false,
+            curve: 'basis',
+            padding: 20,
+          },
+        })
+      })
+      .catch((err) => console.error('Failed to load mermaid:', err))
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
@@ -154,7 +164,7 @@ export default function SEVEDiagramInteractive() {
     class Blockchain blockchainStyle`
 
       mermaidRef.current.innerHTML = ''
-      
+
       // Criar elemento com ID único
       const id = `mermaid-${Date.now()}`
       const pre = document.createElement('pre')
@@ -163,37 +173,39 @@ export default function SEVEDiagramInteractive() {
       pre.textContent = diagramDefinition.trim()
       mermaidRef.current.appendChild(pre)
 
-      // Renderizar Mermaid usando a API correta
-      mermaid
-        .run({
-          nodes: [pre],
-          suppressErrors: true,
-        })
-        .then(() => {
-          setIsRendered(true)
-          // Adicionar tooltips e eventos de clique
-          setTimeout(() => {
-            addInteractivity()
-          }, 500)
-        })
-        .catch(async (err: Error) => {
-          console.error('Erro ao renderizar Mermaid:', err)
-          // Tentar método alternativo usando render()
+      // Renderizar Mermaid usando import() dinamico
+      import('mermaid')
+        .then(async (mod) => {
+          const mermaid = (mod as any).default || mod
           try {
-            const result = await mermaid.render(id, diagramDefinition.trim())
-            if (result && mermaidRef.current) {
-              mermaidRef.current.innerHTML = result.svg
-              setIsRendered(true)
-              setTimeout(() => {
-                addInteractivity()
-              }, 500)
-            } else {
+            await mermaid.run({ nodes: [pre], suppressErrors: true })
+            setIsRendered(true)
+            setTimeout(() => {
+              addInteractivity()
+            }, 500)
+          } catch (err) {
+            console.error('Erro ao renderizar Mermaid (dynamic run):', err)
+            // fallback para render()
+            try {
+              const result = await mermaid.render(id, diagramDefinition.trim())
+              if (result && mermaidRef.current) {
+                mermaidRef.current.innerHTML = result.svg
+                setIsRendered(true)
+                setTimeout(() => {
+                  addInteractivity()
+                }, 500)
+              } else {
+                setIsRendered(true)
+              }
+            } catch (renderErr) {
+              console.error('Erro no fallback render (dynamic):', renderErr)
               setIsRendered(true)
             }
-          } catch (renderErr) {
-            console.error('Erro no método alternativo:', renderErr)
-            setIsRendered(true) // Renderizar mesmo com erro para não travar a UI
           }
+        })
+        .catch((err) => {
+          console.error('Failed to load mermaid for rendering:', err)
+          setIsRendered(true)
         })
     }
   }, [isInView, isRendered])

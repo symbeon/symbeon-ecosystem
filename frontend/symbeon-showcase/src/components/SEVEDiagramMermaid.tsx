@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'framer-motion'
 import { useRef, useEffect, useState } from 'react'
-import mermaid from 'mermaid'
 
 export default function SEVEDiagramMermaid() {
   const ref = useRef(null)
@@ -10,10 +9,16 @@ export default function SEVEDiagramMermaid() {
   const [isRendered, setIsRendered] = useState(false)
 
   useEffect(() => {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: 'dark',
-      themeVariables: {
+    // Dynamic import of mermaid to avoid bundling it into the main chunk
+    let cancelled = false
+    import('mermaid')
+      .then((mod) => {
+        if (cancelled) return
+        const mermaid = (mod as any).default || mod
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: 'dark',
+          themeVariables: {
         primaryColor: '#8b5cf6',
         primaryTextColor: '#ffffff',
         primaryBorderColor: '#6366f1',
@@ -51,15 +56,20 @@ export default function SEVEDiagramMermaid() {
         edgeLabelBackground: '#1a2332',
         compositeTitleBackground: '#141b2d',
         compositeBorder: '#8b5cf6',
-      },
-      flowchart: {
-        useMaxWidth: true,
-        htmlLabels: true,
-        curve: 'basis',
-        padding: 20,
-      },
-      securityLevel: 'loose',
-    })
+          },
+          flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            curve: 'basis',
+            padding: 20,
+          },
+          securityLevel: 'loose',
+        })
+      })
+      .catch((err) => console.error('Failed to load mermaid:', err))
+    return () => {
+      cancelled = true
+    }
   }, [])
 
   useEffect(() => {
@@ -132,27 +142,32 @@ graph TB
     class Blockchain blockchainStyle
       `
 
-      mermaid
-        .run({
-          nodes: [mermaidRef.current],
-          suppressErrors: true,
-        })
-        .then(() => {
-          setIsRendered(true)
-          // Adicionar animação após renderização
-          if (mermaidRef.current) {
-            const svg = mermaidRef.current.querySelector('svg')
-            if (svg) {
-              svg.style.opacity = '0'
-              svg.style.transition = 'opacity 1s ease-in'
-              setTimeout(() => {
-                svg.style.opacity = '1'
-              }, 100)
-            }
-          }
+      // load mermaid dynamically when needed
+      import('mermaid')
+        .then((mod) => {
+          const mermaid = (mod as any).default || mod
+          return mermaid
+            .run({
+              nodes: [mermaidRef.current],
+              suppressErrors: true,
+            })
+            .then(() => {
+              setIsRendered(true)
+              // Adicionar animação após renderização
+              if (mermaidRef.current) {
+                const svg = mermaidRef.current.querySelector('svg')
+                if (svg) {
+                  svg.style.opacity = '0'
+                  svg.style.transition = 'opacity 1s ease-in'
+                  setTimeout(() => {
+                    svg.style.opacity = '1'
+                  }, 100)
+                }
+              }
+            })
         })
         .catch((err) => {
-          console.error('Erro ao renderizar Mermaid:', err)
+          console.error('Erro ao renderizar Mermaid (dynamic):', err)
         })
 
       // Inserir definição do diagrama
