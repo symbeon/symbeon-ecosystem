@@ -1,0 +1,15 @@
+{
+  "name": "symbeon-ecosystem",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Symbeon Ecosystem - SEVE Protocol Implementation",
+  "scripts": {
+    "dev": "cd frontend/symbeon-showcase && npm run dev",
+    "build": "cd frontend/symbeon-showcase && npm run build",
+    "preview": "cd frontend/symbeon-showcase && npm run preview",
+    "install:showcase": "cd frontend/symbeon-showcase && npm install"
+  },
+  "workspaces": [
+    "frontend/symbeon-showcase"
+  ]
+}
