@@ -71,15 +71,16 @@ export default function LoginModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-bg-primary/95 backdrop-blur-lg flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, y: 20 }}
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             onClick={(e) => e.stopPropagation()}
-            className="bg-bg-card rounded-3xl border border-slate-800 p-8 md:p-12 max-w-md w-full relative"
+            className="bg-bg-card rounded-3xl border border-slate-700/50 p-8 md:p-12 w-full max-w-md relative shadow-2xl max-h-[90vh] overflow-y-auto"
           >
             <button
               onClick={onClose}
@@ -312,7 +313,7 @@ export default function LoginModal({
                   : 'Voltar ao login'}
               </button>
             </div>
-          </motion.div>
+            </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
